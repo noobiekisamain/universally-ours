@@ -49,7 +49,7 @@ end
 
 -- ==================== TABS ====================
 local Tabs = {
-    Home = Window:Tab({ Title = "Home & Changelog", Icon = "home" }),
+    Home = Window:Tab({ Title = "Home & Changelog", Icon = "notebook-tabs" }),
     Combat = Window:Tab({ Title = "Combat & Shooter", Icon = "crosshair" }),
     Visuals = Window:Tab({ Title = "Visuals & ESP", Icon = "eye" }),
     Movement = Window:Tab({ Title = "Movement Mods", Icon = "activity" }),
