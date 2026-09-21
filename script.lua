@@ -15,7 +15,7 @@ local Camera = Workspace.CurrentCamera
 
 local Window = WindUI:CreateWindow({
     Title = "Universally Ours",
-    Icon = "rbxassetid://6023426915",
+    Icon = "user",
     Author = "by Noobiekisa | v7.5",
     Folder = "UniversallyOursConfig",
     Size = UDim2.fromOffset(580, 480),
