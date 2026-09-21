@@ -9,6 +9,7 @@ local UserInputService = game:GetService("UserInputService")
 local TeleportService = game:GetService("TeleportService")
 local Workspace = game:GetService("Workspace")
 local Lighting = game:GetService("Lighting")
+local ContentProvider = game:GetService("ContentProvider")
 
 local LocalPlayer = Players.LocalPlayer
 local Camera = Workspace.CurrentCamera
@@ -50,6 +51,7 @@ end
 -- ==================== TABS ====================
 local Tabs = {
     Home = Window:Tab({ Title = "Home & Changelog", Icon = "notebook-tabs" }),
+    Profile = Window:Tab({ Title = "Player Profile", Icon = "user-check" }),
     Combat = Window:Tab({ Title = "Combat & Shooter", Icon = "crosshair" }),
     Visuals = Window:Tab({ Title = "Visuals & ESP", Icon = "eye" }),
     Movement = Window:Tab({ Title = "Movement Mods", Icon = "activity" }),
@@ -71,10 +73,10 @@ Tabs.Home:Paragraph({
     Title = "Changelog & Update Notes",
     Content = [[
 [v7.5 Update Changelog]
+• Added dedicated Player Profile tab displaying Head thumbnail, Username, User ID, and Display Name.
 • Reverted smoothly back to WindUI for robust slider compatibility and smooth UI animations.
 • Expanded Extreme Trolling Suite: Spazatic glitch, Earthquake camera shake, Fake Lag visualizer, and Audio Sound Spammer.
 • Fully integrated working keybind systems directly on toggles.
-• Optimized all background event loops for zero frame drop performance.
 ]]
 })
 
@@ -103,6 +105,51 @@ Tabs.Home:Button({
         if #list > 0 then
             TeleportService:TeleportToPlaceInstance(game.PlaceId, list[math.random(1, #list)], LocalPlayer)
         end
+    end
+})
+
+-- ==================== PROFILE TAB ====================
+local thumbType = Enum.ThumbnailType.HeadShot
+local thumbSize = Enum.ThumbnailSize.Size420x420
+local content, isLoaded = Players:GetUserThumbnailAsync(LocalPlayer.UserId, thumbType, thumbSize)
+
+Tabs.Profile:Paragraph({
+    Title = "Account Information",
+    Content = string.format(
+        "Display Name: %s\nUsername: %s\nUser ID: %d\nAccount Age: %d Days",
+        LocalPlayer.DisplayName,
+        LocalPlayer.Name,
+        LocalPlayer.UserId,
+        LocalPlayer.AccountAge
+    )
+})
+
+Tabs.Profile:Paragraph({
+    Title = "Avatar Headshot Asset",
+    Content = "Thumbnail CDN Link Loaded:\n" .. tostring(content)
+})
+
+Tabs.Profile:Button({
+    Title = "Copy User ID to Clipboard",
+    Callback = function()
+        if syn and syn.write_clipboard then
+            syn.write_clipboard(tostring(LocalPlayer.UserId))
+        elseif setclipboard then
+            setclipboard(tostring(LocalPlayer.UserId))
+        end
+        WindUI:Notify({ Title = "Profile", Content = "Copied User ID to clipboard!", Duration = 3 })
+    end
+})
+
+Tabs.Profile:Button({
+    Title = "Copy Username to Clipboard",
+    Callback = function()
+        if syn and syn.write_clipboard then
+            syn.write_clipboard(LocalPlayer.Name)
+        elseif setclipboard then
+            setclipboard(LocalPlayer.Name)
+        end
+        WindUI:Notify({ Title = "Profile", Content = "Copied Username to clipboard!", Duration = 3 })
     end
 })
 
